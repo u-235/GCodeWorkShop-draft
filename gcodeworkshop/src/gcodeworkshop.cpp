@@ -184,8 +184,6 @@ GCodeWorkShop::GCodeWorkShop(Medium* medium)
 
 	clipboard = QApplication::clipboard();
 	connect(clipboard, SIGNAL(dataChanged()), this, SLOT(clipboardChanged()));
-	windowMapper = new QSignalMapper(this);
-	connect(windowMapper, SIGNAL(mapped(QWidget*)), this, SLOT(setActiveSubWindow(QWidget*)));
 
 	model = new QStandardItemModel();
 	ui->projectTreeView->setModel(model);
@@ -1460,8 +1458,9 @@ void GCodeWorkShop::updateWindowMenu()
 		action->setCheckable(true);
 		action->setChecked(doc == activeDocument());
 		action->setToolTip(doc->brief());
-		connect(action, SIGNAL(triggered()), windowMapper, SLOT(map()));
-		windowMapper->setMapping(action, docList.at(i));
+		connect(action, &QAction::triggered, [this, doc]() {
+			setActiveDocument(doc);
+		});
 	}
 }
 
@@ -2140,13 +2139,14 @@ Document* GCodeWorkShop::findDocument(const QString& fileName)
 	return m_documentManager->findDocumentByFilePath(canonicalFilePath);
 }
 
-void GCodeWorkShop::setActiveSubWindow(QWidget* window)
+bool GCodeWorkShop::setActiveDocument(Document* doc)
 {
-	if (!window) {
-		return;
-	}
+	return m_documentManager->setActiveDocument(doc);
+}
 
-	ui->mdiArea->setActiveSubWindow(qobject_cast<QMdiSubWindow*>(window));
+bool GCodeWorkShop::setActiveDocument(const QString& fileName)
+{
+	return m_documentManager->setActiveDocument(fileName);
 }
 
 QString GCodeWorkShop::currentPath() const
@@ -2174,7 +2174,7 @@ void GCodeWorkShop::loadFile(const DocumentInfo::Ptr& info, bool checkAlreadyLoa
 {
 	QFileInfo file;
 
-	if (checkAlreadyLoaded && m_documentManager->setActiveDocument(info->filePath)) {
+	if (checkAlreadyLoaded && setActiveDocument(info->filePath)) {
 		return;
 	}
 
@@ -2590,7 +2590,7 @@ void GCodeWorkShop::createUserToolTipsFile()
 		openFile(fileName);
 	}
 
-	m_documentManager->setActiveDocument(fileName);
+	setActiveDocument(fileName);
 }
 
 void GCodeWorkShop::createGlobalToolTipsFile()
@@ -2602,7 +2602,7 @@ void GCodeWorkShop::createGlobalToolTipsFile()
 		openFile(fileName);
 	}
 
-	m_documentManager->setActiveDocument(fileName);
+	setActiveDocument(fileName);
 }
 
 void GCodeWorkShop::attachHighlighterToDirButtonClicked(bool attach)
@@ -3178,7 +3178,7 @@ void GCodeWorkShop::openFileTableWidgetClicked(int x, int y)
 			existing->close();
 			updateOpenFileList();
 		} else {
-			m_documentManager->setActiveDocument(existing);
+			setActiveDocument(existing);
 		}
 	}
 }
@@ -3549,7 +3549,7 @@ void GCodeWorkShop::fileChanged(const QString& fileName)
 
 	if (doc) {
 		modified = doc->isModified();
-		m_documentManager->setActiveDocument(doc);
+		setActiveDocument(doc);
 	} else {
 		fileChangeMonitor->removePath(fileName);
 		return;

@@ -52,7 +52,6 @@ class QMoveEvent;
 class QPrinter;
 class QProcess;
 class QResizeEvent;
-class QSignalMapper;
 class QStandardItem;
 class QStandardItemModel;
 class QToolBar;
@@ -159,7 +158,8 @@ private slots:
 	void updateMenus();
 	void updateWindowMenu();
 	Document* createDocument(const QString& type);
-	void setActiveSubWindow(QWidget* window);
+	bool setActiveDocument(Document* doc);
+	bool setActiveDocument(const QString& fileName);
 	void loadFile(const DocumentInfo::Ptr& options, bool checkAlreadyLoaded = true);
 	void recentFilesChanged();
 	void fileOpenRecent(QAction* act);
@@ -290,7 +290,6 @@ private:
 	bool currentProjectModified;
 	QString currentProjectName;
 
-	QSignalMapper* windowMapper;
 	RecentFiles* m_recentFiles;
 
 	QMenu* fileMenu;
