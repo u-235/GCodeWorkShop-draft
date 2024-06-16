@@ -80,7 +80,6 @@
 #include <QRegularExpression>   // for QRegularExpression
 #include <QResizeEvent>         // for QResizeEvent
 #include <QSettings>            // for QSettings, QSettings::IniFormat, QSettings::NoError
-#include <QSignalMapper>        // for QSignalMapper
 #include <QSize>                // for QSize
 #include <QSpinBox>             // for QSpinBox
 #include <QSplitter>            // for QSplitter
