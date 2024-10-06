@@ -7,7 +7,7 @@ the following steps are needed to build it:
 - Install the C++11 compiler supported by [Qt SDK][1]. You should also
   install the make utility.
 - Install Qt utilities such as qmake, moc, lrelease and the resource packer.
-- Install the Qt5 framework with version 5.6 or higher.
+- Install the Qt5 framework with version 5.5 or higher.
 - Obtain and unzip the GCodeWorkShop source code.
 - Create a build folder and navigate to it.
 - Run qmake specifying the path to GCodeWorkShop sources.
@@ -51,6 +51,20 @@ install/deb-build.sh
 
 The script creates a .deb package in the current folder and does not require
 root privileges.
+
+
+### Peculiarities of building in Ubuntu 18 (Bionic Beaver)
+
+In addition to the listed above packages you should install qt5-default or
+specify the full path `/usr/lib/i386-linux-gnu/qt5/bin/qmake` instead of `qmake`.
+
+If the build crashes at the linking stage because the `GL` library is missing
+even after installing the `libgl-dev` package, it may be needed to link
+`/usr/lib/lib/libGL.so` to the regular library:
+
+```
+sudo ln /usr/lib/i386-linux-gnu/libGL.so.1.7.0 /usr/lib/libGL.so
+```
 
 
 Building in windows with MSYS2

@@ -25,10 +25,13 @@
 #include <QString>          // for QString, operator==
 #include <Qt>               // for ConnectionType, DirectConnection
 #include <QtDebug>          // for QDebug
-#include <QtGlobal>         // for qAsConst, qWarning
+#include <QtGlobal>         // for qAsConst, qWarning, QT_VERSION, QT_VERSION_CHECK
 // As long as qAsConst is used.
 // IWYU pragma: no_include "type_traits"
 // IWYU pragma: no_include <type_traits>
+#if QT_VERSION < QT_VERSION_CHECK(5, 7, 0)
+	#define qAsConst(d) d
+#endif
 
 #include <document.h>                   // for Document
 #include <documentinfo.h>               // for DocumentInfo
