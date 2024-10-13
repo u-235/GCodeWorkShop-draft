@@ -20,7 +20,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include <QAbstractItemModel>   // for QTypeInfo<>::isLarge, QTypeInfo<>::isStatic
 #include <QAbstractPrintDialog> // for QAbstractPrintDialog, QAbstractPrintDialog::PrintSelection
 #include <QAction>              // for QAction
 #include <QActionGroup>         // for QActionGroup
@@ -102,6 +101,7 @@
 #include <Qt>                   // for operator|, red, WindowStates, BusyCursor, Dialog, MouseFocusReason
 #include <QtGlobal>             // for QFlags, QT_VERSION, QT_VERSION_CHECK, qMakeForeachContainer, Q_OS_LINUX
 
+#include <abstractactions.h>            // for AbstractAtions;
 #include <addons-actions.h>             // for Addons::Actions
 #include <document.h>                   // for Document
 #include <documentinfo.h>               // for DocumentInfo::Ptr, DocumentInfo
@@ -123,6 +123,7 @@
 #include <version.h>
 
 #include "capslockeventfilter.h"    // for CapsLockEventFilter
+#include "defaultkeysequences.h"
 #include "findinf.h"                // for FindInFiles
 #include "gcoder.h"                 // for DOCUMENT_TYPE
 #include "gcoderinfo.h"             // for GCoderInfo
@@ -214,6 +215,7 @@ GCodeWorkShop::GCodeWorkShop(Medium* medium)
 	connect(m_recentFiles, SIGNAL(fileListChanged(QStringList)), this, SLOT(updateRecentFilesMenu(QStringList)));
 	connect(m_recentFiles, SIGNAL(saveRequest()), this, SLOT(recentFilesChanged()));
 
+	m_shortcuts.insert(DefaultKeySequences::sequence());
 	m_addonsActions = new Addons::Actions(this);
 	createActions();
 	createToolBars();
@@ -252,6 +254,7 @@ GCodeWorkShop::GCodeWorkShop(Medium* medium)
 
 	readSettings();
 	clipboardLoad();
+	updateShortcuts(m_shortcuts);
 }
 
 GCodeWorkShop::~GCodeWorkShop()
@@ -1501,6 +1504,14 @@ Document* GCodeWorkShop::createDocument(const QString& type)
 	return doc;
 }
 
+void GCodeWorkShop::connectAbstractActions(AbstractActions* actions)
+{
+	connect(this, SIGNAL(updateIcons()), actions, SLOT(loadIcons()));
+	connect(this, SIGNAL(updateTranslations()), actions, SLOT(loadTranslations()));
+	connect(this, SIGNAL(updateShortcuts(const QMap<QString, QKeySequence>&)), actions,
+	        SLOT(loadShortcuts(const QMap<QString, QKeySequence>&)));
+}
+
 void GCodeWorkShop::createActions()
 {
 	newAct = new QAction(QIcon(":/images/filenew.png"), tr("&New"), this);
@@ -2087,6 +2098,8 @@ void GCodeWorkShop::readSettings()
 	ui->currentPathCheckBox->setChecked(settings.value("FileBrowserShowCurrentFileDir",
 	                                    false).toBool());
 	ui->filePreviewSpinBox->setValue(settings.value("FilePreviewNo", 10).toInt());
+
+	m_shortcuts.loadSettings(&settings);
 }
 
 void GCodeWorkShop::writeSettings()
@@ -2149,6 +2162,8 @@ void GCodeWorkShop::writeSettings()
 	if (!m_startEmpty) {
 		storeFileInfoInSession();
 	}
+
+	m_shortcuts.saveSettings(&settings, DefaultKeySequences::sequence());
 }
 
 Document* GCodeWorkShop::activeDocument() const

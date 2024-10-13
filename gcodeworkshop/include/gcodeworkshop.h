@@ -43,8 +43,10 @@ class QDropEvent;
 class QEvent;
 class QFileSystemModel;
 class QFileSystemWatcher;
+class QKeySequence;
 class QLabel;
 class QLineEdit;
+template <class Key, class T> class QMap;
 class QMdiSubWindow;
 class QMenu;
 class QModelIndex;
@@ -57,8 +59,10 @@ class QStandardItemModel;
 class QToolBar;
 class QToolButton;
 
-#include <documentinfo.h>   // for DocumentInfo, DocumentInfo::Ptr
+#include <documentinfo.h>           // for DocumentInfo, DocumentInfo::Ptr
+#include <utils/keysequencemap.h>   // for KeySequenceMap
 
+class AbstractActions;
 class Document;
 class DocumentManager;
 class FindInFiles;
@@ -105,6 +109,11 @@ public:
 	void dragEnterEvent(QDragEnterEvent* event) override;
 	void dropEvent(QDropEvent* event) override;
 
+signals:
+	void updateTranslations();
+	void updateIcons();
+	void updateShortcuts(const QMap<QString, QKeySequence>&);
+
 protected:
 	Ui::GCodeWorkShop* ui;
 	static GCodeWorkShop* SINGLETON;
@@ -118,6 +127,7 @@ protected:
 		QSize size;
 	} mMWConfig;
 
+	KeySequenceMap m_shortcuts;
 	Addons::Actions* m_addonsActions;
 
 public:
@@ -236,6 +246,7 @@ signals:
 	void intCapsLockChanged(bool enable);
 
 private:
+	void connectAbstractActions(AbstractActions* actions);
 	void createActions();
 	void createMenus();
 	void createToolBars();
