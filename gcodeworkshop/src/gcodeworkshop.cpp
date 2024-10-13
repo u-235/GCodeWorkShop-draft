@@ -125,6 +125,7 @@
 
 #include "actions/editactions.h"    // for EditActions
 #include "actions/fileactions.h"    // for FileActions
+#include "actions/helpactions.h"    // for HelpActions
 #include "actions/toolactions.h"    // for ToolActions
 #include "actions/windowactions.h"  // for WindowActions
 #include "capslockeventfilter.h"    // for CapsLockEventFilter
@@ -166,6 +167,8 @@ GCodeWorkShop::GCodeWorkShop(Medium* medium)
 	ui = new Ui::GCodeWorkShop();
 	ui->setupUi(this);
 	setAcceptDrops(true);
+	connect(ui->mdiArea, SIGNAL(subWindowActivated(QMdiSubWindow*)), this,
+	        SLOT(activeWindowChanged(QMdiSubWindow*)));
 
 	findToolBar = nullptr;
 	serialToolBar = nullptr;
@@ -336,6 +339,11 @@ EditActions* GCodeWorkShop::editActions()
 FileActions* GCodeWorkShop::fileActions()
 {
 	return m_fileActions;
+}
+
+HelpActions* GCodeWorkShop::helpActions()
+{
+	return m_helpActions;
 }
 
 ToolActions* GCodeWorkShop::toolActions()
@@ -1545,30 +1553,14 @@ void GCodeWorkShop::createActions()
 	        || QDir(QApplication::applicationDirPath() + "../" + "examples").exists()
 	        || QDir(QApplication::applicationDirPath() + "../../" + "examples").exists());
 
+	m_helpActions = new HelpActions(this);
+	connectAbstractActions(m_helpActions);
+
 	m_toolActions = new ToolActions(this);
 	connectAbstractActions(m_toolActions);
 
 	m_windowActions = new WindowActions(this);
 	connectAbstractActions(m_windowActions);
-
-	connect(ui->mdiArea, SIGNAL(subWindowActivated(QMdiSubWindow*)), this,
-	        SLOT(activeWindowChanged(QMdiSubWindow*)));
-
-	createGlobalToolTipsAct = new QAction(tr("&Create global cnc tooltips"), this);
-	createGlobalToolTipsAct->setToolTip(tr("Create default global cnc tooltips file"));
-	connect(createGlobalToolTipsAct, SIGNAL(triggered()), this, SLOT(createGlobalToolTipsFile()));
-
-	createUserToolTipsAct = new QAction(tr("&Create user cnc tooltips"), this);
-	createUserToolTipsAct->setToolTip(tr("Create/edit user cnc tooltips file"));
-	connect(createUserToolTipsAct, SIGNAL(triggered()), this, SLOT(createUserToolTipsFile()));
-
-	aboutAct = new QAction(tr("&About"), this);
-	aboutAct->setToolTip(tr("Show the application's About box"));
-	connect(aboutAct, SIGNAL(triggered()), this, SLOT(about()));
-
-	aboutQtAct = new QAction(tr("About &Qt"), this);
-	aboutQtAct->setToolTip(tr("Show the Qt library's About box"));
-	connect(aboutQtAct, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 }
 
 void GCodeWorkShop::createMenus()
@@ -1668,11 +1660,11 @@ void GCodeWorkShop::createMenus()
 	menuBar()->addSeparator();
 
 	helpMenu = menuBar()->addMenu(tr("&Help"));
-	helpMenu->addAction(createGlobalToolTipsAct);
-	helpMenu->addAction(createUserToolTipsAct);
+	helpMenu->addAction(m_helpActions->createGlobalToolTips());
+	helpMenu->addAction(m_helpActions->createUserToolTips());
 	helpMenu->addSeparator();
-	helpMenu->addAction(aboutAct);
-	helpMenu->addAction(aboutQtAct);
+	helpMenu->addAction(m_helpActions->about());
+	helpMenu->addAction(m_helpActions->aboutQt());
 }
 
 void GCodeWorkShop::createToolBars()

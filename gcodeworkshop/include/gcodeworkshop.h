@@ -67,6 +67,7 @@ class Document;
 class DocumentManager;
 class EditActions;
 class FileActions;
+class HelpActions;
 class FindInFiles;
 class GCoderDocument;
 class GCodeFileServer;
@@ -102,6 +103,7 @@ public:
 	Addons::Actions* addonsActions();
 	EditActions* editActions();
 	FileActions* fileActions();
+	HelpActions* helpActions();
 	ToolActions* toolActions();
 	DocumentManager* documentManager() const;
 	Document* activeDocument() const;
@@ -138,6 +140,7 @@ protected:
 	Addons::Actions* m_addonsActions;
 	EditActions* m_editActions;
 	FileActions* m_fileActions;
+	HelpActions* m_helpActions;
 	ToolActions* m_toolActions;
 	WindowActions* m_windowActions;
 
@@ -332,11 +335,6 @@ private:
 	QToolBar* editToolBar;
 	QToolBar* windowToolBar;
 	QToolBar* toolsToolBar;
-
-	QAction* aboutAct;
-	QAction* aboutQtAct;
-	QAction* createGlobalToolTipsAct;
-	QAction* createUserToolTipsAct;
 
 	QProcess* proc;
 	QProcess* sfsProc;
