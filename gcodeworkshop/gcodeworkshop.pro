@@ -22,6 +22,7 @@ INCLUDEPATH += include
 #######################################
 
 HEADERS += \
+    include/abstractactions.h \
     include/document.h \
     include/documentinfo.h \
     include/documentmanager.h \
@@ -61,6 +62,7 @@ HEADERS += \
     src/tooltips.h
 
 SOURCES += \
+    src/actions/abstractactions.cpp \
     src/actions/knownactions.cpp \
     src/capslockeventfilter.cpp \
     src/defaultkeysequences.cpp \
