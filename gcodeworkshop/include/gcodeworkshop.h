@@ -74,6 +74,7 @@ class KDiff3App;
 class Medium;
 class RecentFiles;
 class SessionManager;
+class ToolActions;
 
 namespace Addons {
 class Actions;
@@ -100,6 +101,7 @@ public:
 	Addons::Actions* addonsActions();
 	EditActions* editActions();
 	FileActions* fileActions();
+	ToolActions* toolActions();
 	DocumentManager* documentManager() const;
 	Document* activeDocument() const;
 	GCoderDocument* activeGCoderDocument() const;
@@ -135,6 +137,7 @@ protected:
 	Addons::Actions* m_addonsActions;
 	EditActions* m_editActions;
 	FileActions* m_fileActions;
+	ToolActions* m_toolActions;
 
 public:
 	void openFile(const QString& fileName);
@@ -334,13 +337,6 @@ private:
 	QAction* aboutQtAct;
 	QAction* createGlobalToolTipsAct;
 	QAction* createUserToolTipsAct;
-	QAction* inLineCalcAct;
-
-	QAction* calcAct;
-	QAction* diffLAct;
-	QAction* diffRAct;
-	QAction* diffAct;
-	QAction* diffEditorAct;
 
 	QProcess* proc;
 	QProcess* sfsProc;
@@ -369,7 +365,6 @@ private:
 	QCheckBox* mCheckIgnoreComments;
 
 	QPointer<QToolBar> serialToolBar;
-	QAction* showSerialToolBarAct;
 	QAction* configPortAct;
 	QAction* receiveAct;
 	QAction* sendAct;
