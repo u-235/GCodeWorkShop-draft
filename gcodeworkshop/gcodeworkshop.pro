@@ -42,6 +42,7 @@ HEADERS += \
 #######################################
 
 HEADERS += \
+    src/actions/editactions.h \
     src/actions/fileactions.h \
     src/capslockeventfilter.h \
     src/defaultkeysequences.h \
@@ -64,6 +65,7 @@ HEADERS += \
 
 SOURCES += \
     src/actions/abstractactions.cpp \
+    src/actions/editactions.cpp \
     src/actions/fileactions.cpp \
     src/actions/knownactions.cpp \
     src/capslockeventfilter.cpp \

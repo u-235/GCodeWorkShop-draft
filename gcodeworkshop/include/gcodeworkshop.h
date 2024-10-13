@@ -65,6 +65,7 @@ class QToolButton;
 class AbstractActions;
 class Document;
 class DocumentManager;
+class EditActions;
 class FileActions;
 class FindInFiles;
 class GCoderDocument;
@@ -97,6 +98,7 @@ public:
 
 	QMainWindow* mainWindow();
 	Addons::Actions* addonsActions();
+	EditActions* editActions();
 	FileActions* fileActions();
 	DocumentManager* documentManager() const;
 	Document* activeDocument() const;
@@ -131,6 +133,7 @@ protected:
 
 	KeySequenceMap m_shortcuts;
 	Addons::Actions* m_addonsActions;
+	EditActions* m_editActions;
 	FileActions* m_fileActions;
 
 public:
@@ -321,9 +324,6 @@ private:
 	QToolBar* windowToolBar;
 	QToolBar* toolsToolBar;
 
-	QAction* cutAct;
-	QAction* copyAct;
-	QAction* pasteAct;
 	QAction* tileHAct;
 	QAction* tileVAct;
 	QAction* cascadeAct;
@@ -334,17 +334,7 @@ private:
 	QAction* aboutQtAct;
 	QAction* createGlobalToolTipsAct;
 	QAction* createUserToolTipsAct;
-	QAction* undoAct;
-	QAction* redoAct;
 	QAction* inLineCalcAct;
-
-	QAction* findAct;
-	QAction* replaceAct;
-	QAction* deleteAct;
-	QAction* selAllAct;
-	QAction* readOnlyAct;
-
-	QAction* configAct;
 
 	QAction* calcAct;
 	QAction* diffLAct;
