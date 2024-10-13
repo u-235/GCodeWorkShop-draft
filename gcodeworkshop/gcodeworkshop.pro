@@ -32,6 +32,7 @@ HEADERS += \
     include/gcoderstyle.h \
     include/gcoderwidgetproperties.h \
     include/gcodeworkshop.h \
+    include/knownactions.h \
     include/utils/expressionparser.h \
     include/utils/removezeros.h
 
@@ -59,6 +60,7 @@ HEADERS += \
     src/tooltips.h
 
 SOURCES += \
+    src/actions/knownactions.cpp \
     src/capslockeventfilter.cpp \
     src/document.cpp \
     src/documentinfo.cpp \
