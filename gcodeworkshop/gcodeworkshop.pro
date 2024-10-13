@@ -15,7 +15,7 @@ defined(VERSION, var) {
     VERSION = $$getVersion()
 }
 
-INCLUDEPATH += include
+INCLUDEPATH += include src
 
 
 # GCoderWorkShop : public API
@@ -51,6 +51,8 @@ HEADERS += \
     src/defaultkeysequences.h \
     src/documentwidgetcloseeventfilter.h \
     src/findinf.h \
+    src/findtoolbar/findtoolbar.h \
+    src/findtoolbar/findtoolbaractions.h \
     src/gcoder.h \
     src/gcodereventfilter.h \
     src/gcoderinfo.h \
@@ -84,6 +86,8 @@ SOURCES += \
     src/documentwidgetcloseeventfilter.cpp \
     src/documentwidgetproperties.cpp \
     src/findinf.cpp \
+    src/findtoolbar/findtoolbar.cpp \
+    src/findtoolbar/findtoolbaractions.cpp \
     src/gcoderdocument.cpp \
     src/gcodereventfilter.cpp \
     src/gcoderinfo.cpp \

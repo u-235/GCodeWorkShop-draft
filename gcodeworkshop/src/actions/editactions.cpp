@@ -32,11 +32,11 @@ EditActions::EditActions(GCodeWorkShop* app) : AbstractActions(app)
 	connect(makeAction(KnownActions::Edit::COPY), SIGNAL(triggered()), app, SLOT(copy()));
 	connect(makeAction(KnownActions::Edit::CUT), SIGNAL(triggered()), app, SLOT(cut()));
 	connect(makeAction(KnownActions::Edit::DELETE), SIGNAL(triggered()), app, SLOT(deleteText()));
-	connect(makeAction(KnownActions::Edit::FIND), SIGNAL(triggered()), app, SLOT(createFindToolBar()));
+	connect(makeAction(KnownActions::Edit::FIND), SIGNAL(triggered()), app, SLOT(showFindToolBar()));
 	connect(makeAction(KnownActions::Edit::PASTE), SIGNAL(triggered()), app, SLOT(paste()));
 	connect(makeAction(KnownActions::Edit::READ_ONLY), SIGNAL(triggered()), app, SLOT(readOnly()));
 	connect(makeAction(KnownActions::Edit::REDO), SIGNAL(triggered()), app, SLOT(redo()));
-	connect(makeAction(KnownActions::Edit::REPLACE), SIGNAL(triggered()), app, SLOT(createFindToolBar()));
+	connect(makeAction(KnownActions::Edit::REPLACE), SIGNAL(triggered()), app, SLOT(showReplaceToolBar()));
 	connect(makeAction(KnownActions::Edit::SELECT_ALL), SIGNAL(triggered()), app, SLOT(selAll()));
 	connect(makeAction(KnownActions::Edit::UNDO), SIGNAL(triggered()), app, SLOT(undo()));
 

@@ -33,7 +33,6 @@
 #include <QStringList>  // for QStringList
 
 class QAction;
-class QCheckBox;
 class QClipboard;
 class QCloseEvent;
 class QComboBox;
@@ -45,7 +44,6 @@ class QFileSystemModel;
 class QFileSystemWatcher;
 class QKeySequence;
 class QLabel;
-class QLineEdit;
 template <class Key, class T> class QMap;
 class QMdiSubWindow;
 class QMenu;
@@ -67,6 +65,7 @@ class Document;
 class DocumentManager;
 class EditActions;
 class FileActions;
+class FindToolBar;
 class HelpActions;
 class FindInFiles;
 class GCoderDocument;
@@ -192,20 +191,15 @@ private slots:
 	void activeWindowChanged(QMdiSubWindow* window);
 	void deleteText();
 	void findInFl();
-	bool findNext();
-	bool findPrevious();
-	void replaceNext();
-	void replacePrevious();
-	void replaceAll();
 	void selAll();
 	void config();
 	void readOnly();
 	void doCalc();
 	void loadFoundedFile(const QString& fileName);
 	void updateStatusBar();
-	void createFindToolBar();
-	void closeFindToolBar();
-	void findTextChanged();
+	void showFindReplaceToolBar(bool replace);
+	void showFindToolBar();
+	void showReplaceToolBar();
 	void createSerialToolBar();
 	void serialConfig();
 	void serialConfigTest();
@@ -269,6 +263,7 @@ private:
 	void createMenus();
 	void createToolBars();
 	void createStatusBar();
+	void createFindToolBar();
 	void readSettings();
 	void writeSettings();
 	void loadSerialConfignames();
@@ -347,20 +342,7 @@ private:
 	QAction* deAttachHighlightToDirAct;
 	QToolButton* deAttachHighlightButton;
 
-	QPointer<QToolBar> findToolBar;
-	QLineEdit* findEdit;
-	QLineEdit* replaceEdit;
-	QLabel* findLabel;
-	QLabel* replaceLabel;
-	QAction* findNextAct;
-	QAction* findPreviousAct;
-	QAction* replaceNextAct;
-	QAction* replacePreviousAct;
-	QAction* replaceAllAct;
-	QAction* findCloseAct;
-	QCheckBox* mCheckFindWholeWords;
-	QCheckBox* mCheckIgnoreCase;
-	QCheckBox* mCheckIgnoreComments;
+	FindToolBar* m_findToolBar;
 
 	QPointer<QToolBar> serialToolBar;
 	QAction* configPortAct;
