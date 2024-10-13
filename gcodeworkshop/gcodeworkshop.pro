@@ -45,6 +45,7 @@ HEADERS += \
     src/actions/editactions.h \
     src/actions/fileactions.h \
     src/actions/toolactions.h \
+    src/actions/windowactions.h \
     src/capslockeventfilter.h \
     src/defaultkeysequences.h \
     src/documentwidgetcloseeventfilter.h \
@@ -70,6 +71,7 @@ SOURCES += \
     src/actions/fileactions.cpp \
     src/actions/knownactions.cpp \
     src/actions/toolactions.cpp \
+    src/actions/windowactions.cpp \
     src/capslockeventfilter.cpp \
     src/defaultkeysequences.cpp \
     src/document.cpp \

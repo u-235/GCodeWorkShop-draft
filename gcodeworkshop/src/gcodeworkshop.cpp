@@ -126,6 +126,7 @@
 #include "actions/editactions.h"    // for EditActions
 #include "actions/fileactions.h"    // for FileActions
 #include "actions/toolactions.h"    // for ToolActions
+#include "actions/windowactions.h"  // for WindowActions
 #include "capslockeventfilter.h"    // for CapsLockEventFilter
 #include "defaultkeysequences.h"
 #include "findinf.h"                // for FindInFiles
@@ -1347,12 +1348,12 @@ void GCodeWorkShop::updateMenus()
 	m_fileActions->close()->setEnabled(hasMdiChild);
 	m_fileActions->closeAll()->setEnabled(hasMdiChild);
 
-	tileHAct->setEnabled(hasMdiChild);
-	tileVAct->setEnabled(hasMdiChild);
-	cascadeAct->setEnabled(hasMdiChild);
-	nextAct->setEnabled(hasMdiChild);
-	previousAct->setEnabled(hasMdiChild);
-	separatorAct->setVisible(hasMdiChild);
+	m_windowActions->tileHoriz()->setEnabled(hasMdiChild);
+	m_windowActions->tileVert()->setEnabled(hasMdiChild);
+	m_windowActions->cascade()->setEnabled(hasMdiChild);
+	m_windowActions->next()->setEnabled(hasMdiChild);
+	m_windowActions->previous()->setEnabled(hasMdiChild);
+	m_windowActions->separator()->setVisible(hasMdiChild);
 	m_editActions->selectAll()->setEnabled(hasMdiChildNotReadOnly);
 	m_editActions->find()->setEnabled(hasMdiChild);
 
@@ -1467,18 +1468,18 @@ void GCodeWorkShop::updateWindowMenu()
 	windowMenu->addAction(m_fileActions->close());
 	windowMenu->addAction(m_fileActions->closeAll());
 	windowMenu->addSeparator();
-	windowMenu->addAction(tileHAct);
-	windowMenu->addAction(tileVAct);
-	windowMenu->addAction(cascadeAct);
+	windowMenu->addAction(m_windowActions->tileHoriz());
+	windowMenu->addAction(m_windowActions->tileVert());
+	windowMenu->addAction(m_windowActions->cascade());
 	windowMenu->addSeparator();
-	windowMenu->addAction(nextAct);
-	windowMenu->addAction(previousAct);
-	windowMenu->addAction(separatorAct);
+	windowMenu->addAction(m_windowActions->next());
+	windowMenu->addAction(m_windowActions->previous());
+	windowMenu->addAction(m_windowActions->separator());
 
 	windowMenu->setAttribute(Qt::WA_AlwaysShowToolTips, true);
 
 	QList<Document*> docList = m_documentManager->documentList();
-	separatorAct->setVisible(!docList.isEmpty());
+	m_windowActions->separator()->setVisible(!docList.isEmpty());
 
 	for (int i = 0; i < docList.size(); ++i) {
 		Document* doc = docList.at(i);
@@ -1547,33 +1548,11 @@ void GCodeWorkShop::createActions()
 	m_toolActions = new ToolActions(this);
 	connectAbstractActions(m_toolActions);
 
-	tileHAct = new QAction(QIcon(":/images/tile_h.png"), tr("Tile &horizontally"), this);
-	tileHAct->setToolTip(tr("Tile the windows horizontally"));
-	connect(tileHAct, SIGNAL(triggered()), ui->mdiArea, SLOT(tileSubWindows()));
-
-	tileVAct = new QAction(QIcon(":/images/tile_v.png"), tr("Tile &vertycally"), this);
-	tileVAct->setToolTip(tr("Tile the windows vertycally"));
-	connect(tileVAct, SIGNAL(triggered()), this, SLOT(tileSubWindowsVertycally()));
-
-	cascadeAct = new QAction(QIcon(":/images/cascade.png"), tr("&Cascade"), this);
-	cascadeAct->setToolTip(tr("Cascade the windows"));
-	connect(cascadeAct, SIGNAL(triggered()), ui->mdiArea, SLOT(cascadeSubWindows()));
-
-	nextAct = new QAction(QIcon(":/images/go-next.png"), tr("Ne&xt"), this);
-	nextAct->setShortcut(QKeySequence::Forward);
-	nextAct->setToolTip(tr("Move the focus to the next window"));
-	connect(nextAct, SIGNAL(triggered()), ui->mdiArea, SLOT(activateNextSubWindow()));
-
-	previousAct = new QAction(QIcon(":/images/go-previous.png"), tr("Pre&vious"), this);
-	previousAct->setShortcut(QKeySequence::Back);
-	previousAct->setToolTip(tr("Move the focus to the previous window"));
-	connect(previousAct, SIGNAL(triggered()), ui->mdiArea, SLOT(activatePreviousSubWindow()));
+	m_windowActions = new WindowActions(this);
+	connectAbstractActions(m_windowActions);
 
 	connect(ui->mdiArea, SIGNAL(subWindowActivated(QMdiSubWindow*)), this,
 	        SLOT(activeWindowChanged(QMdiSubWindow*)));
-
-	separatorAct = new QAction(this);
-	separatorAct->setSeparator(true);
 
 	createGlobalToolTipsAct = new QAction(tr("&Create global cnc tooltips"), this);
 	createGlobalToolTipsAct->setToolTip(tr("Create default global cnc tooltips file"));
@@ -1759,8 +1738,8 @@ void GCodeWorkShop::createToolBars()
 
 	windowToolBar = addToolBar(tr("Window"));
 	windowToolBar->setObjectName("Window");
-	windowToolBar->addAction(previousAct);
-	windowToolBar->addAction(nextAct);
+	windowToolBar->addAction(m_windowActions->previous());
+	windowToolBar->addAction(m_windowActions->next());
 }
 
 void GCodeWorkShop::createStatusBar()
@@ -3486,6 +3465,11 @@ void GCodeWorkShop::startSerialPortServer()
 	QProcess::startDetached(path + fileName, QStringList(), path);
 }
 
+void GCodeWorkShop::tileSubWindowsHorizontally()
+{
+	ui->mdiArea->tileSubWindows();
+}
+
 void GCodeWorkShop::tileSubWindowsVertycally()
 {
 	if (ui->mdiArea->subWindowList().isEmpty()) {
@@ -3501,6 +3485,21 @@ void GCodeWorkShop::tileSubWindowsVertycally()
 		window->move(position);
 		position.setY(position.y() + window->height());
 	}
+}
+
+void GCodeWorkShop::cascadeSubWindows()
+{
+	ui->mdiArea->cascadeSubWindows();
+}
+
+void GCodeWorkShop::activateNextSubWindow()
+{
+	ui->mdiArea->activateNextSubWindow();
+}
+
+void GCodeWorkShop::activatePreviousSubWindow()
+{
+	ui->mdiArea->activatePreviousSubWindow();
 }
 
 void GCodeWorkShop::clipboardChanged()

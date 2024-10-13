@@ -75,6 +75,7 @@ class Medium;
 class RecentFiles;
 class SessionManager;
 class ToolActions;
+class WindowActions;
 
 namespace Addons {
 class Actions;
@@ -138,6 +139,7 @@ protected:
 	EditActions* m_editActions;
 	FileActions* m_fileActions;
 	ToolActions* m_toolActions;
+	WindowActions* m_windowActions;
 
 public:
 	void openFile(const QString& fileName);
@@ -241,7 +243,11 @@ private slots:
 	void currentSessionChanged();
 	void showSessionDialog();
 	void fileChanged(const QString& fileName);
+	void tileSubWindowsHorizontally();
 	void tileSubWindowsVertycally();
+	void cascadeSubWindows();
+	void activateNextSubWindow();
+	void activatePreviousSubWindow();
 	void clipboardChanged();
 	void deleteFromClipboardButtonClicked();
 	void clipboardTreeViewContextMenu(const QPoint& point);
@@ -327,12 +333,6 @@ private:
 	QToolBar* windowToolBar;
 	QToolBar* toolsToolBar;
 
-	QAction* tileHAct;
-	QAction* tileVAct;
-	QAction* cascadeAct;
-	QAction* nextAct;
-	QAction* previousAct;
-	QAction* separatorAct;
 	QAction* aboutAct;
 	QAction* aboutQtAct;
 	QAction* createGlobalToolTipsAct;
