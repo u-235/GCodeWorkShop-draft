@@ -253,6 +253,7 @@ GCodeWorkShop::GCodeWorkShop(Medium* medium)
 	connect(m_sessionManager, SIGNAL(saveRequest()), this, SLOT(sessionsChanged()));
 
 	createMenus();
+	updateWindowMenu();
 	updateMenus();
 
 	setWindowTitle(tr("GCodeWorkShop"));
@@ -1654,7 +1655,6 @@ void GCodeWorkShop::createMenus()
 	toolsMenu->addAction(m_toolActions->calc());
 
 	windowMenu = menuBar()->addMenu(tr("&Window"));
-	updateWindowMenu();
 	connect(windowMenu, SIGNAL(aboutToShow()), this, SLOT(updateWindowMenu()));
 
 	menuBar()->addSeparator();
