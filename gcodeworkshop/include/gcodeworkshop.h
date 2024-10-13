@@ -65,6 +65,7 @@ class QToolButton;
 class AbstractActions;
 class Document;
 class DocumentManager;
+class FileActions;
 class FindInFiles;
 class GCoderDocument;
 class GCodeFileServer;
@@ -96,6 +97,7 @@ public:
 
 	QMainWindow* mainWindow();
 	Addons::Actions* addonsActions();
+	FileActions* fileActions();
 	DocumentManager* documentManager() const;
 	Document* activeDocument() const;
 	GCoderDocument* activeGCoderDocument() const;
@@ -129,6 +131,7 @@ protected:
 
 	KeySequenceMap m_shortcuts;
 	Addons::Actions* m_addonsActions;
+	FileActions* m_fileActions;
 
 public:
 	void openFile(const QString& fileName);
@@ -318,21 +321,9 @@ private:
 	QToolBar* windowToolBar;
 	QToolBar* toolsToolBar;
 
-	QAction* newAct;
-	QAction* openAct;
-	QAction* openExampleAct;
-	QAction* saveAct;
-	QAction* saveAllAct;
-	QAction* saveAsAct;
-	QAction* exitAct;
-	QAction* findFilesAct;
-	QAction* printAct;
-	QAction* printPreviewAct;
 	QAction* cutAct;
 	QAction* copyAct;
 	QAction* pasteAct;
-	QAction* closeAct;
-	QAction* closeAllAct;
 	QAction* tileHAct;
 	QAction* tileVAct;
 	QAction* cascadeAct;
@@ -346,8 +337,6 @@ private:
 	QAction* undoAct;
 	QAction* redoAct;
 	QAction* inLineCalcAct;
-
-	QAction* sessionMgrAct;
 
 	QAction* findAct;
 	QAction* replaceAct;
