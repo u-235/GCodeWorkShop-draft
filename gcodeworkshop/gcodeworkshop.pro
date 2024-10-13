@@ -42,6 +42,7 @@ HEADERS += \
 
 HEADERS += \
     src/capslockeventfilter.h \
+    src/defaultkeysequences.h \
     src/documentwidgetcloseeventfilter.h \
     src/findinf.h \
     src/gcoder.h \
@@ -62,6 +63,7 @@ HEADERS += \
 SOURCES += \
     src/actions/knownactions.cpp \
     src/capslockeventfilter.cpp \
+    src/defaultkeysequences.cpp \
     src/document.cpp \
     src/documentinfo.cpp \
     src/documentmanager.cpp \
