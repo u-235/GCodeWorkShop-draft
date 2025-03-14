@@ -2763,7 +2763,7 @@ void GCodeWorkShop::projectAdd()
 			icon = fModel->iconProvider()->icon(file);
 
 			if (icon.isNull()) {
-				icon = QIcon(":/images/ncfile.png");
+				icon = QIcon(":/images/mime-gcode.png");
 			}
 
 			item = new QStandardItem(icon, file.fileName());
@@ -3054,7 +3054,7 @@ void GCodeWorkShop::projectLoad(const QString& projectName)
 				icon = fModel->iconProvider()->icon(file);
 
 				if (icon.isNull()) {
-					icon = QIcon(":/images/ncfile.png");
+					icon = QIcon(":/images/mime-gcode.png");
 				}
 
 				QStandardItem* childItem = new QStandardItem(icon, file.fileName());

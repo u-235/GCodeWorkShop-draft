@@ -86,7 +86,7 @@ GCoderDocument::GCoderDocument() : Document(nullptr)
 	m_inLineCalc = new InLineCalc(m_textEdit);
 	connect(m_inLineCalc, SIGNAL(complete(const QString&)), this, SLOT(inLineCalcComplete(const QString&)));
 
-	m_textEdit->setWindowIcon(QIcon(":/images/ncfile.png"));
+	m_textEdit->setWindowIcon(QIcon(":/images/mime-gcode.png"));
 	m_textEdit->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(m_textEdit, SIGNAL(customContextMenuRequested(const QPoint&)), this,
 	        SLOT(customContextMenuRequest(const QPoint&)));
